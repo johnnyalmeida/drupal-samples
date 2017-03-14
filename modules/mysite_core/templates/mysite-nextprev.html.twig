@@ -1,0 +1,37 @@
+<div class="l-container">
+  {% if mysite_links.prev %}
+  <div class="prev l-container-inner">
+    <div class="header">
+      {% trans %}
+        Previous Project
+      {% endtrans %}
+    </div>
+    <a href="{{mysite_links.prev.url}}">
+      <div class="link-block">
+          {{ mysite_links.prev.title }}
+      </div>
+      <div class="link-icon icon--flip">
+          <svg class="icon icon-flip"><use xlink:href="/themes/mysite/dist/svg/symbol/svg/sprite.symbol.svg#arrow-right"></svg>
+      </div>
+    </a>
+  </div>
+  {% endif %}
+  {% if mysite_links.next %}
+  <div class="next l-container-inner">
+    <div class="header">
+      {% trans %}
+        Next Project
+      {% endtrans %}
+    </div>
+    <a href="{{mysite_links.next.url}}">
+      <div class="link-block">
+          {{ mysite_links.next.title }}
+      </div>
+      <div class="link-icon icon--flip">
+          <svg class="icon icon-flip"><use xlink:href="/themes/mysite/dist/svg/symbol/svg/sprite.symbol.svg#arrow-left"></svg>
+      </div>
+    </a>
+  </div>
+  {% endif %}
+</div>
+

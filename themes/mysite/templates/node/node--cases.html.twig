@@ -1,0 +1,70 @@
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'card'
+  ]
+%}
+{{ attach_library('mysite/slick') }}
+<article{{ attributes.addClass(classes) }}>
+  <header class="case-header parallax-hero-trigger scene_element scene_element--fadein" style="background-image: url({{ file_url(content.field_cases_cover['#items'].entity.uri.value) }});">
+    <div class="case-header__content hero__row">
+      <div class="l-container">
+        <div class="l-container-inner scene_element scene_element--fadein scene_element--delayed">
+          {{ title_prefix }}
+            <h1{{ title_attributes.addClass('case-header__title') }}>
+              {{ label }}
+            </h1>
+          {{ title_suffix }}
+          {{ content.body }}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="case-services">
+    <div class="l-container">
+      <div class="l-container-inner">
+        <h2 class="case-services__title">{% trans %}Services{% endtrans %}</h2>
+        <div class="row">
+          {{ content.field_cases_services }}
+          {{ content.field_cases_link }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if content.field_mobile_demo_image.0 %}
+  <div class="case-mobile-demo">
+    <div class="l-container clearfix">
+      {% if content.field_mobile_demo_title %}
+      <div class="case-mobile-demo__header row">
+        <div class="l-container-inner">
+          <h2 class="case-mobile-demo__title">{{ content.field_mobile_demo_title }}</h2>
+
+          {% if content.field_mobile_demo_desc %}
+          <div class="case-mobile-demo__description">
+            {{ content.field_mobile_demo_desc }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    <div class="case-mobile-demo__content" style="background-color: {{ node.field_mobile_background_color.value.0.color }}; background-image: url({{file_url(node.field_mobile_background_image.entity.fileuri)}});">
+      <div class="l-container clearfix">
+        <div class="case-mobile-demo__images">
+          {{ content.field_mobile_demo_image }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {{content.field_project_demo}}
+
+</article>

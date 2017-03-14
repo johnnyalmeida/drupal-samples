@@ -1,0 +1,6 @@
+name: Mysite
+type: theme
+description: 'Mysite theme.'
+package: Mysite
+core: 8.x
+version: '1.0'

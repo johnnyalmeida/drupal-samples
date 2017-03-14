@@ -1,0 +1,91 @@
+<?php
+
+use Drupal\Core\Url;
+use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+/**
+ * Implements hook_theme().
+ */
+function mysite_theme() {
+  return array(
+    'mysite_nextprev' => array(
+      'variables' => array('mysite_links' => ''),
+    ),
+  );
+}
+
+/**
+ * Implements hook_language_switch_links_alter().
+ */
+function mysite_language_switch_links_alter(array &$links, $type, $path) {
+  $language_interface = \Drupal::languageManager()->getCurrentLanguage();
+
+  // Customize the languages links to match the layout.
+  foreach ($links as $langcode => $link) {
+    if ($langcode == 'pt-br') {
+      $links[$langcode]['title'] = '/ pt';
+    }
+    else {
+      $links[$langcode]['title'] = '/ en';
+    }
+
+    // Remove current language to keep just the other.
+    if ($language_interface->getId() == $langcode) {
+      unset($links[$langcode]);
+    }
+  }
+}
+
+/**
+ * Implements hook_user_login().
+ */
+function mysite_user_login($account) {
+  // Redirect user to content administration.
+  $response = new RedirectResponse("/admin/content");
+  $response->send();
+  exit;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function mysite_form_alter(&$form, $form_state) {
+  // Make changes only in the landing page contact form.
+  if($form['#form_id'] == 'contact_message_landingpage_contact_form') {
+    // Add a submit handler.
+    foreach (array_keys($form['actions']) as $action) {
+      if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+        // Add a handler in the first position of the array.
+        array_unshift($form['actions'][$action]['#submit'], 'mysite_landingpage_form_submit');
+        // Add a submit handler to redirect the user after ther form is processed.
+        $form['actions'][$action]['#submit'][] = 'mysite_redirect_form_submit';
+      }
+    }
+  }
+}
+
+/**
+ * Submit handler for landingpage contact form.
+ */
+function mysite_landingpage_form_submit($form, FormStateInterface $form_state) {
+  // Get the origin.
+  $origin = \Drupal::request()->server->get('HTTP_REFERER');
+  // Set a custom subject to contact storage module save the origin page as the subject.
+  $form_state->setValue('subject', $origin);
+
+}
+
+/**
+ * Submit handler redirecting landingpage contact form.
+ */
+function mysite_redirect_form_submit(){
+  // The LP contact form can be used in multiple pages with different URL structures.
+  $previousUrl = \Drupal::request()->server->get('HTTP_REFERER');
+  // Redirect the user to the form origin.
+  $redirect = $previousUrl . '#contact';
+  $response = new RedirectResponse($redirect);
+  $response->send();
+  exit;
+}

@@ -1,0 +1,139 @@
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'card'
+  ]
+%}
+{{ attach_library('mysite/slick') }}
+  <div class="l-mysite-home__row l-mysite-home__row--1 parallax-hero-trigger">
+    <div class="sticky-header-trigger-2"></div>
+    <div class="hero">
+      <article{{ attributes.addClass(classes) }} style="background-image: url({{ file_url(content.ladingpage_header_banner['#items'].entity.uri.value) }});">
+        <div class="hero__cta">
+          <div class="l-container">
+            <div class="l-container-inner">
+              <div class="hero__row clearfix scene_element scene_element--fadein scene_element--delayed">
+                <div class="hero__col">
+                  <div class="hero__brand scene_element">
+                    <div class="hero__brand-inner">
+                      <svg><use xlink:href="/themes/mysite/dist/svg/symbol/svg/sprite.symbol.svg#TDF"/></svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="hero__col">
+                  <div class="hero__slogan-wrapper hero__text">
+                    {{ content.body }}
+                    <div class="hero__links">
+                      <a href="/#services">{% trans %}Know more{% endtrans %}</a>
+                      <a href="#contact">{% trans %}Get in touch{% endtrans %}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="l-mysite-home__row l-mysite-home__row--2" id="about">
+    <div class="l-container">
+      <div class="l-container-inner">
+        <div class="landingpage-about">
+            <div class="block__content">
+              {% block content %}
+                <h2 class="block__title">{% trans %}About{% endtrans %}</h2>
+                <div class="field--name-field-description-content-sectio">
+                  {{ content.landingpage_about_header }}
+                  {{ content.landingpage_about_description }}
+                </div>
+              {% endblock %}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node--type-service node--view-mode-teaser landingpage-service">
+    <div class="block-views-blockwhat-we-do-block-1">
+      <div class="l-container">
+        <div class="l-container-inner">
+          <div class="block__title-wrapper">
+            <h2 class="block__title">{% trans %}Our Services{% endtrans %}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="node__content">
+      <div class="services-slick-bg">
+        <div class="services-slick-bg--fixed" style="background-image: url({{ file_url(content.landingpage_service_background['#items'].entity.uri.value) }});">
+          <div class="l-container">
+            <div class="l-container-inner">
+            <div class="field--name-field-icon-id">
+              <svg class="icon icon--large">
+                <use xlink:href="/themes/mysite/dist/svg/symbol/svg/sprite.symbol.svg#{{ node.landingpage_service_icon.value }}" />
+              </svg>
+            </div>
+
+            <div class="field--name-body">
+              {{content.landingpage_service_description}}
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="l-what-we-do__footer">
+      <div class="l-container l-container--x-large clearfix">
+        <div class="what-we-do__cta">
+          {% trans %}Want to know more about our services?{% endtrans %}
+          <br><a href="#contact">{% trans %}Get in touch!{% endtrans %}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="l-mysite-home__row--4">
+    <div class="views-element-container block block-views block-views-blockcases-block-cases-view landingpage-projects-related">
+      <div class="l-container">
+        <div class="l-container-inner">
+          <div class="block__title-wrapper">
+            <h2 class="block__title">{{content.landingpage_projects_title}}</h2>
+          </div>
+        </div>
+      </div>
+      <div class="view view-cases-block view-id-cases_block view-display-id-cases_view">
+        <div class="l-container l-container--x-large landingpage_recent_works">
+          <div class="view-content">
+            {{content.landingpage_projects_related}}
+          </div>
+        </div>
+      </div>
+      <div class="l-container">
+        <div class="l-container-inner l-container--btn">
+          <a href="/work" class="btn-all-work">{% trans %}All work{% endtrans %}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="l-mysite-home__row l-mysite-home__row--2">
+    <div class="l-container">
+      <div class="l-container-inner">
+        <div class="block-region-six">
+          <div class="landingpage-clients">
+            {{content.client_block_output}}
+            {{content.client_view_block_output}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+<div id="contact"></div>
